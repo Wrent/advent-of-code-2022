@@ -8,7 +8,7 @@ fun main() {
 }
 
 private fun partOne(): Int {
-	return dayTwoInput.split("\n").map {
+	return input.split("\n").map {
 		val split = it.split(" ")
 		split.get(0).toSymbol() to split.get(1).toPartOneResponse()
 	}
@@ -17,7 +17,7 @@ private fun partOne(): Int {
 }
 
 private fun partTwo(): Int {
-	return dayTwoInput.split("\n").map {
+	return input.split("\n").map {
 		val split = it.split(" ")
 		val their = split.get(0).toSymbol()
 		val mine = when (split.get(1)) {
@@ -57,7 +57,7 @@ private fun evaluateGame(their: Symbol, mine: Symbol): Int {
 	else return 6
 }
 
-const val dayTwoInput = """A X
+private const val input = """A X
 A Z
 A Z
 A X

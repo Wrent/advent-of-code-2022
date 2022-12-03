@@ -8,13 +8,13 @@ fun main() {
 }
 
 private fun partOne(): Long {
-	return dayOneInput.split("\n\n").maxOfOrNull { elf ->
+	return input.split("\n\n").maxOfOrNull { elf ->
 		elf.split("\n").sumOf { it.toLong() }
 	} ?: -1
 }
 
 private fun partTwo(): Long {
-	return dayOneInput.split("\n\n")
+	return input.split("\n\n")
 		.map { elf ->
 			elf.split("\n").sumOf { it.toLong() }
 		}.sortedDescending()
@@ -22,7 +22,7 @@ private fun partTwo(): Long {
 		.sum()
 }
 
-const val dayOneInput = """22243
+private const val input = """22243
 11899
 
 1696
