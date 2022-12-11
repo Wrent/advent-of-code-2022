@@ -3,16 +3,18 @@ package cz.wrent.advent
 fun main() {
 	val result = partOne(input, 20, 3)
 	println("10a: $result")
+	println(result == 51075L)
 	println("10b: ${partOne(input, 10000, 1)}")
 }
 
 private fun partOne(input: String, rounds: Int, divisor: Long): Long {
 	val monkeys = input.split("\n\n").map { it.parseMonkey() }
+	val allMod = monkeys.map { it.testDivisor }.reduce { acc, l -> acc * l }
 	for (i in 1..rounds) {
-		monkeys.forEach { it.turn(monkeys, divisor) }
+		monkeys.forEach { it.turn(monkeys, divisor, allMod) }
 	}
 	val sortedMonkeys = monkeys.sortedByDescending { it.inspections }
-	return (sortedMonkeys.get(0).inspections * sortedMonkeys.get(1).inspections).toLong()
+	return (sortedMonkeys.get(0).inspections * sortedMonkeys.get(1).inspections)
 }
 
 private class Monkey(
@@ -22,15 +24,15 @@ private class Monkey(
 	val falseMonkey: Int,
 ) {
 	val items = mutableListOf<Long>()
-	var inspections = 0
+	var inspections = 0L
 
 	fun add(item: Long) {
 		items.add(item)
 	}
 
-	fun turn(monkeys: List<Monkey>, divisor: Long) {
+	fun turn(monkeys: List<Monkey>, divisor: Long, allMod: Long?) {
 		items.forEach {
-			val worry = operation(it) / divisor
+			val worry = (operation(it) / divisor).let { w -> if (allMod != null) w % allMod else w }
 			if (worry % testDivisor == 0L) {
 				monkeys[trueMonkey].add(worry)
 			} else {
@@ -47,7 +49,11 @@ private fun String.parseMonkey(): Monkey {
 	val startingItems = lines.get(1).replace("  Starting items: ", "").split(", ").map { it.toLong() }
 	val operationData = lines.get(2).replace("  Operation: new = old ", "").split(" ")
 	val operationNum = if (operationData.get(1) == "old") null else operationData.get(1).toLong()
-	val operation: (Long) -> Long = if (operationData.first() == "*") { { it * (operationNum ?: it) } } else { {it + (operationNum ?: it)} }
+	val operation: (Long) -> Long = if (operationData.first() == "*") {
+		{ it * (operationNum ?: it) }
+	} else {
+		{ it + (operationNum ?: it) }
+	}
 	val testDivisor = lines.get(3).replace("  Test: divisible by ", "").toLong()
 	val trueMonkey = lines.get(4).replace("    If true: throw to monkey ", "").toInt()
 	val falseMonkey = lines.get(5).replace("    If false: throw to monkey ", "").toInt()
