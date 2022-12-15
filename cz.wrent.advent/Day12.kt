@@ -45,7 +45,7 @@ private fun process(map: Map<Pair<Int, Int>, Area>, start: Pair<Int, Int>, moveR
 	}
 }
 
-private fun Pair<Int, Int>.toNeighbours(): Set<Pair<Int, Int>> {
+fun Pair<Int, Int>.toNeighbours(): Set<Pair<Int, Int>> {
 	return setOf(
 		this.first to this.second + 1,
 		this.first to this.second - 1,

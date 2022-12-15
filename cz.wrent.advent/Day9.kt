@@ -61,7 +61,7 @@ private fun Pair<Int, Int>.moveHead(direction: String): Pair<Int, Int> {
 	}
 }
 
-private fun Pair<Int, Int>.toNeighbours(): Set<Pair<Int, Int>> {
+private fun Pair<Int, Int>.toNeighboursAll(): Set<Pair<Int, Int>> {
 	val set = mutableSetOf<Pair<Int, Int>>()
 	for (i in this.first - 1..this.first + 1) {
 		for (j in this.second - 1 .. this.second + 1) {
@@ -72,7 +72,7 @@ private fun Pair<Int, Int>.toNeighbours(): Set<Pair<Int, Int>> {
 }
 
 private fun Pair<Int, Int>.moveTail(head: Pair<Int, Int>): Pair<Int, Int> {
-	if (head.toNeighbours().contains(this)) {
+	if (head.toNeighboursAll().contains(this)) {
 		return this
 	} else if (this.first == head.first) {
 		return this.first to if (this.second > head.second) this.second - 1 else this.second + 1
